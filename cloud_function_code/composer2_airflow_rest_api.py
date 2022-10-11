@@ -1,5 +1,5 @@
 from typing import Any
-
+from flask import jsonify,request
 import google.auth
 from google.auth.transport.requests import AuthorizedSession
 import requests
@@ -33,7 +33,7 @@ def make_composer2_web_server_request(url: str, method: str = "GET", **kwargs: A
     return authed_session.request(method, url, **kwargs)
 
 
-def trigger_dag(web_server_url: str, dag_id: str, data: dict) -> str:
+def trigger_dag(web_server_url: str, dag_id: str, data) -> str:
     """
     Make a request to trigger a dag using the stable Airflow 2 REST API.
     https://airflow.apache.org/docs/apache-airflow/stable/stable-rest-api-ref.html
@@ -43,7 +43,8 @@ def trigger_dag(web_server_url: str, dag_id: str, data: dict) -> str:
       dag_id: The DAG ID.
       data: Additional configuration parameters for the DAG run (json).
     """
-
+    data = data.get_json()
+    print(f"data is : {data}")
     endpoint = f"api/v1/dags/{dag_id}/dagRuns"
     request_url = f"{web_server_url}/{endpoint}"
     json_data = {"conf": data}

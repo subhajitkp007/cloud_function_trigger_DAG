@@ -16,7 +16,7 @@
 Trigger a DAG in a Cloud Composer 2 environment in response to an event,
 using Cloud Functions.
 """
-
+import json
 from typing import Any
 
 import composer2_airflow_rest_api
